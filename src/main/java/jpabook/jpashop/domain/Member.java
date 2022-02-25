@@ -16,6 +16,7 @@ public class Member {
     @GeneratedValue // 시퀀스 값 사용
     @Column(name = "member_id")
     private Long id;
+
     private String name;
 
     @Embedded
@@ -23,5 +24,4 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
-
 }
