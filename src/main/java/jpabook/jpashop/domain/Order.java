@@ -81,6 +81,7 @@ public class Order {
         this.setStatus(OrderStatus.CANCEL); // 취소 상태로 변경
 
         for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
 
         }
 
