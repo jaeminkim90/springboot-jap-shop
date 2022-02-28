@@ -70,6 +70,7 @@ public class Order {
     }
 
     // == 비즈니스 로직 == //
+
     /**
      * 주문 취소
      */
@@ -79,11 +80,19 @@ public class Order {
         }
 
         this.setStatus(OrderStatus.CANCEL); // 취소 상태로 변경
-
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
-
         }
+    }
+
+    // == 조회 로직 == //
+
+    /**
+     * 전체 주문 가격 조회
+     */
+    public int getTotalPrice() {
+
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
 
     }
 }
