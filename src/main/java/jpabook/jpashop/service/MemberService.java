@@ -41,9 +41,17 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+
     // 단건 조회
     @Transactional
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    @Transactional
+    public void update(Long id, String name) {
+        // 영속성 컨텍스트에서 member를 가져오면, 변경 감지에 의해 update 완료
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
     }
 }
