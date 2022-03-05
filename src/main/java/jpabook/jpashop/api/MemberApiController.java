@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @RestController // @Controller + @ResponseBody -> 데이터를 바로 보낸다
 @RequiredArgsConstructor
@@ -16,7 +17,14 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    // 첫번째 버전의 회원 등록 API
+    // 회원 조회 API - V1: 가장 단순한 형태
+    @GetMapping("/api/v1/members")
+    public List<Member> membersV1() {
+        return memberService.findMembers();
+    }
+
+
+    // 회원 등록 API - V1
     // 엔티티를 파라미터로 바로 받는 방식은 좋지 않다
     @PostMapping("/api/v1/members")
     public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member) {
@@ -25,7 +33,7 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
-    // 회원 등록 API V2
+    // 회원 등록 API - V2
     @PostMapping("/api/v2/members")
     public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
         // 파라미터로 별도의 데이터객체를 사용한다
@@ -39,6 +47,7 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
+    // 회원 수정 API
     @PutMapping("/api/v2/members/{id}") // id를 pathvariable로 사용
     public UpdateMemberResponse updateMemberV2(
             @PathVariable("id") Long id,
