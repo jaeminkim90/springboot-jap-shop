@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController // @Controller + @ResponseBody -> 데이터를 바로 보낸다
 @RequiredArgsConstructor
@@ -18,9 +19,37 @@ public class MemberApiController {
     private final MemberService memberService;
 
     // 회원 조회 API - V1: 가장 단순한 형태
+    // 엔티티를 직접 반환하는 것은 지양해야 한다
     @GetMapping("/api/v1/members")
     public List<Member> membersV1() {
         return memberService.findMembers();
+    }
+
+    // 회원 조회 API - V2: DTO를 사용하는 방식
+    @GetMapping("/api/v2/members")
+    public Result memberV2() {
+        List<Member> findMembers = memberService.findMembers();
+
+        // List<Member>를 List<MemberDTO>로 변환
+        List<MemberDTO> collect = findMembers.stream()
+                .map(m -> new MemberDTO(m.getName()))
+                .collect(Collectors.toList());
+
+        // json 데이터가 배열 처리되는 것을 방지하기 위해 Result에 넣어서 반환
+        return new Result(collect);
+    }
+
+    @Data // Getter와 Setter를 포함한다
+    @AllArgsConstructor // 필드 전체를 파라미터로 받는 생성자를 자동으로 만든다
+    static class Result<T> {
+        private T data;
+    }
+
+    // data 리턴 전용 DTO
+    @Data
+    @AllArgsConstructor
+    static class MemberDTO {
+        private String name;
     }
 
 
@@ -70,9 +99,6 @@ public class MemberApiController {
         private Long id;
         private String name;
     }
-
-
-
 
 
     @Data
