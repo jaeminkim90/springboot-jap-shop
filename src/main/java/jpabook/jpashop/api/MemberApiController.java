@@ -46,6 +46,7 @@ public class MemberApiController {
     }
 
     // data 리턴 전용 DTO
+    // DTO에는 반환할 데이터만 필드로 지정할 수 있다. 모든 데이터를 반환하는 것은 좋은 방법이 아니다.
     @Data
     @AllArgsConstructor
     static class MemberDTO {
