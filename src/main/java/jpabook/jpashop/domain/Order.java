@@ -4,6 +4,7 @@ package jpabook.jpashop.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,9 +24,11 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY) // 지연로딩은 DB에서 데이터를 가져오지 않는다. 대안으로 ProxyMember를 쓴다
     @JoinColumn(name = "member_id")
     private Member member;
+    // proxy를 사용하여 member에는 new ByteBuddyInterceptor()로 생성된 인스턴스가 들어간다
+    // 이후에 Member 객체의 Data 변화가 있을 때 DB에 접근한다
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
