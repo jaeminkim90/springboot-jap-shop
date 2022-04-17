@@ -1,13 +1,12 @@
 spring:
   datasource:
     #url: jdbc:h2:tcp://localhost/~/jpashop
-    url: jdbc:mariadb://jpashop.ckhyvby1zevs.ap-northeast-2.rds.amazonaws.com:3306/jpashop
+    url: jdbc:mysql://jpashop.ckhyvby1zevs.ap-northeast-2.rds.amazonaws.com:3306/jpashop?serverTimezone=Asia/Seoul
     username: woply
     password: jed344212
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
